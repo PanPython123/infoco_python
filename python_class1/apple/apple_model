@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Apple</title>
+        <link rel="stylesheet" href="css/semantic.css" media="screen" title="no title">
+    </head>
+    <body>
+        <!-- 菜单栏 -->
+        <div class="ui fixed inverted fitted borderless fluid nine item menu">
+        </div>
+
+        <!-- 背景大图 -->
+        <div class="ui vertical secondary basic segment">
+        </div>
+
+        <!-- 4张图开始  -->
+        <div class="ui secondary vertical basic segment">
+            <div class="ui fitted text four item menu">
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="ui vertiacl secondary very padded basic segment">
+                <div class="ui container">
+                    <!-- 对iphone进行说明 -->
+                    <!-- 分割线 -->
+                </div>
+
+                <div class="ui five column grid">
+                    <div class="column">
+                        <!-- 垂直菜单 -->
+                    </div>
+                </div>
+        </div>
+
+    </body>
+</html>
