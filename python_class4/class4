@@ -1,0 +1,174 @@
+Class5
+
+watermark
+---
+```python
+from PIL import Image, ImageDraw, ImageFont
+
+
+def water_mark(picPath, num):
+    img = Image.open(picPath)             #图片地址
+    xSize, ySize = img.size
+    fontsize = int(ySize / 4)
+    position = xSize - fontsize
+    myfont = ImageFont.truetype('Arial.ttf', fontsize)
+    ImageDraw.Draw(img).text((position, 0), str(num), font=myfont, fill='red')
+    img.save('icon_with_num.jpg')
+
+
+if __name__ == '__main__':
+    water_mark('/Users/yuanxiansen/Desktop/python/fundamental/watermark/apic14052.jpg', 3)
+```
+
+
+upgrade 给100张图片加水印
+---
+```python
+from PIL import Image, ImageDraw, ImageFont
+import os
+directory = '/Users/yuanxiansen/Desktop/python/fundamental/watermark/'
+def water_mark(picPath, num, name):
+    img = Image.open(picPath)             #图片地址
+    xSize, ySize = img.size
+    fontsize = int(ySize / 4)
+    position = xSize - fontsize
+    myfont = ImageFont.truetype('Arial.ttf', fontsize)
+    ImageDraw.Draw(img).text((position, 0), str(num), font=myfont, fill='red')
+    img.save('/Users/yuanxiansen/Desktop/python/fundamental/watermark/trash/{}.jpg'.format(name))
+
+
+movie_lists = os.listdir('./movie')
+for movie in movie_lists:
+    path = directory + 'movie/' + movie
+    water_mark(path, 3, movie)
+
+```
+
+生成优惠卷
+---
+```python
+import random, string
+path = '/Users/yuanxiansen/Desktop/python/fundamental/coupon/coupon.txt'
+
+def coupon(num, length=7):
+    chars = string.digits + string.ascii_letters
+    for i in range(num):
+        code_num_list = [random.choice(chars) for m in range(length)]
+        num_string = ''.join(code_num_list)
+        file = open(path, 'a')
+        file.write(num_string + '\n')
+        file.close()
+
+coupon(200)
+```
+
+
+验证码
+---python
+```python
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+import random
+
+def rndChar():
+    return chr(random.randint(65, 90))
+
+def RndColor():
+    return (random.randint(64, 255), random.randint(64, 255), random.randint(64, 255)) #random.random()用于生成一个0到1的随机符点数: 0 <= n < 1.0
+
+def RndColor2():
+    return (random.randint(32, 127), random.randint(32, 127), random.randint(32, 127))
+
+#创建画布
+width = 4 * 60
+height = 60
+image = Image.new("RGB", (width, height), (255, 255, 255))
+
+#创建font对象
+font = ImageFont.truetype('Arial.ttf', 36)
+
+#创建draw对象
+draw = ImageDraw.Draw(image)
+
+#填充每个像素
+for i in range(width):
+    for j in range(height):
+        draw.point((i, j), fill=RndColor())
+       # print("%d has been finished"%num)
+
+for i in range(4):
+    draw.text((60 * i + 10, 10), rndChar(), font=font, fill=RndColor2())
+image = image.filter(ImageFilter.BLUR)
+image.save('test.jpg')
+```
+
+将coupon转换成jpg图片
+---
+```python
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+import random
+
+path = '/Users/yuanxiansen/Desktop/python/fundamental/coupon/coupon.txt'
+
+def rndChar():
+    return chr(random.randint(65, 90))
+
+def RndColor():
+    return (random.randint(64, 255), random.randint(64, 255), random.randint(64, 255)) #random.random()用于生成一个0到1的随机符点数: 0 <= n < 1.0
+
+def RndColor2():
+    return (random.randint(32, 127), random.randint(32, 127), random.randint(32, 127))
+
+#创建画布
+width = 7 * 60
+height = 60
+image = Image.new("RGB", (width, height), (255, 255, 255))
+
+#创建font对象
+font = ImageFont.truetype('Arial.ttf', 36)
+
+#创建draw对象
+draw = ImageDraw.Draw(image)
+
+#填充每个像素
+def fill_pixel():
+    for i in range(width):
+        for j in range(height):
+            draw.point((i, j), fill=RndColor())
+
+file = open(path)
+for word in file.readlines():
+    draw = ImageDraw.Draw(image)
+    fill_pixel()
+    count = 0
+    for letter in word:
+        draw.text((60 * count + 10, 10), letter, font=font, fill=RndColor2())
+        count += 1
+    image.filter(ImageFilter.BLUR)
+    image.save('/Users/yuanxiansen/Desktop/python/fundamental/coupon/trash/{}.jpg'.format(word))
+```
+
+词云—生成nikelogo
+————————
+```python
+#encoding=utf-8
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+import jieba
+from PIL import Image, ImageFilter
+import numpy as np
+import os
+
+font = os.path.join(os.path.dirname(__file__), 'DroidSansFallbackFull.ttf')
+
+older = np.array(Image.open('./nike.png'))
+text_from_file_with_apath = open('./xiyouji.txt').read()
+
+wordlist_after_jieba = jieba.cut(text_from_file_with_apath, cut_all=True)
+wl_space_split = " ".join(wordlist_after_jieba)
+
+my_wordcloud = WordCloud(background_color='black', mask=older, font_path=font).generate(wl_space_split)
+
+plt.imshow(my_wordcloud)
+plt.axis("off")
+plt.show()
+```
